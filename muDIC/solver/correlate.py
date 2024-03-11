@@ -236,7 +236,8 @@ def correlate(inputs, correlator, reference_gen):
 
 def correlate_img_to_ref_q4(node_coordss, img, ref, settings):
     # Instantiate empty arrays
-
+    logger = logging.getLogger(__name__)
+    
     node_coords = node_coordss.copy()
 
     img = nd.spline_filter(img, order=settings.interpolation_order)
@@ -298,10 +299,10 @@ def correlate_img_to_ref_q4(node_coordss, img, ref, settings):
 
         # Check for convergence
         if np.max(np.abs(dnod)) < settings.tol:
-            logging.info('Converged in %s iterations' % it)
+            logger.info('Converged in %s iterations' % it)
             return node_coords, Ic, True
 
-    logging.info('Did not converged in %s iterations last increment was %0.4f' % (it, np.max(np.abs(dnod))))
+    logger.info('Did not converged in %s iterations last increment was %0.4f' % (it, np.max(np.abs(dnod))))
     return node_coords, Ic, False
 
     # Calculate correlation factor for this element
